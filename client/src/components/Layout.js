@@ -5,7 +5,7 @@ import Header from './Header'
 const Layout = () => {
     return (
         <Container sx={{minHeight: '100vh', backgroundColor: 'secondary.main'}}>
-            <p style={{color: 'hotpink'}}>ANNOUNCEMENT. just wanna say hi :D</p>
+            <p style={{color: 'hotpink'}}>ANNOUNCEMENT. just wanna say hi :D :D</p>
             <Header />
             <Outlet />
         </Container>
