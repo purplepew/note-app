@@ -1,25 +1,3 @@
 # Node.js dependencies
-node_modules/
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-
-# .env file for sensitive information like API keys
-.env
-
-# Build output
-client/build/
-server/build/
-
-# Operating system files
-.DS_Store
-Thumbs.db
-
-# Secrets or credentials
-server/secrets.json
-
-# IDE files (e.g., VSCode, JetBrains)
-.vscode/
-.idea/
+client/node_modules/
+server/node_modules/
