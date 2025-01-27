@@ -9,6 +9,10 @@ const notesSchema = new mongoose.Schema({
     user: {
         type: mongoose.Types.ObjectId,
         ref: 'User'
+    },
+    colorTheme: {
+        type: Number,
+        default: 0
     }
 })
 
