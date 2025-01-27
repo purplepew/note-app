@@ -22,13 +22,40 @@ export const InputWrapper = styled(Stack)(({ theme }) => ({
     overflowY: 'hidden'
 }))
 
-export const CustomIconButton = ({ Icon, ml, func, color='primary.dark' }) => {
+export const CustomIconButton = ({ Icon, ml, func, color='red'}) => {
     return (
-        <IconButton size='small' sx={{ ml, color }} onClick={func}>
+        <IconButton size='small' sx={{ ml, color}} onClick={func}>
             {Icon}
         </IconButton>
     )
 }
+
+export const paletteTheme = [
+    {
+        bgColor: "#2F2F2F",
+        color: "#82E856",
+        light: "#82E856",
+        dark: "#41752B"
+    },
+    {
+        bgColor: "#EBE31E",
+        color: "#000000",
+        light: "#000000",
+        dark: "#676768"
+    },
+    {
+        bgColor: "#C361F8",
+        color: "#0003FF",
+        light: "#0003FF",
+        dark: "#954ABD"
+    },
+    {
+        bgColor: "#969339",
+        color: "#E3E0FF",
+        light: "#FFFFFF",
+        dark: "#BDBDBD"
+    }
+]
 
 const NoteList = ({ setFeedback, userId }) => {
 

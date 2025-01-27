@@ -28,7 +28,8 @@ export const postNewNote = AsyncHandler(async (req, res) => {
         title,
         body,
         lastEditedAt: new Date().toISOString(),
-        user: userId
+        user: userId,
+        colorTheme: 0
     })
 
     foundUser.notes.push(note._id)
@@ -45,6 +46,7 @@ export const patchNote = AsyncHandler(async (req, res) => {
         body,
         pinned,
         archived,
+        colorTheme
     } = req.body
 
 
@@ -66,7 +68,7 @@ export const patchNote = AsyncHandler(async (req, res) => {
         isModified = true
     }
 
-    if (!isModified && archived === undefined && pinned === undefined) {
+    if (!isModified && archived === undefined && pinned === undefined && colorTheme === undefined) {
         return res.status(400).json({ message: 'No changes were made' })
     }
 
@@ -77,6 +79,15 @@ export const patchNote = AsyncHandler(async (req, res) => {
     if (note.pinned !== pinned && pinned !== undefined) {
         note.pinned = pinned
     }
+    console.log(colorTheme)
+    if (note.colorTheme !== colorTheme && colorTheme !== undefined) {
+        if (colorTheme >= 0 && colorTheme <= 3) {
+            note.colorTheme = colorTheme
+            console.log(1)
+        }
+        console.log(2)
+    }
+    console.log(3)
 
     if (isModified) {
         note.lastEditedAt = new Date().toISOString()
