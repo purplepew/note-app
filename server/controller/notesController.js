@@ -79,15 +79,12 @@ export const patchNote = AsyncHandler(async (req, res) => {
     if (note.pinned !== pinned && pinned !== undefined) {
         note.pinned = pinned
     }
-    console.log(colorTheme)
+    
     if (note.colorTheme !== colorTheme && colorTheme !== undefined) {
         if (colorTheme >= 0 && colorTheme <= 3) {
             note.colorTheme = colorTheme
-            console.log(1)
         }
-        console.log(2)
     }
-    console.log(3)
 
     if (isModified) {
         note.lastEditedAt = new Date().toISOString()

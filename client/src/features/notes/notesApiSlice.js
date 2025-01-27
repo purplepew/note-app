@@ -65,8 +65,18 @@ export const noteApiSlice = apiSlice.injectEndpoints({
             },
             invalidatesTags: (result, err, arg) => [{ type: 'Note', id: arg.noteId }]
         }),
+        getUserArchivedNotes: builder.query({
+            query: (userId) => `/users/${userId}/archived`, 
+            transformResponse: responseData => {
+                const loadedData = responseData.map(note => {
+                    note.id = note._id;
+                    return note
+                })
+                return notesAdapter.setAll(initialState, loadedData)
+            }
+        })
 
     })
 })
 
-export const { useGetUserNotesQuery, usePostNewNoteMutation, useDeleteNoteMutation, usePatchNoteMutation } = noteApiSlice
+export const { useGetUserNotesQuery, usePostNewNoteMutation, useDeleteNoteMutation, usePatchNoteMutation, useGetUserArchivedNotesQuery} = noteApiSlice

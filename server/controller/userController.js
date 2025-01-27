@@ -46,3 +46,18 @@ export const getUserNotes = AsyncHandler(async (req, res) => {
 
     res.json(notes)
 })
+
+export const getUserArchivedNotes = AsyncHandler(async (req, res) => {
+    const { userId } = req.params
+
+    const foundUser = await User.findById(userId).exec()
+
+    const { notes } = await foundUser.populate({
+        path: 'notes',
+        options: { sort: { lastEditedAt: -1 } }
+    });
+
+    const archivedNotes = notes.filter(note => note.archived)
+
+    res.json(archivedNotes)
+})

@@ -4,6 +4,7 @@ import Login from "./features/auth/Login"
 import Public from "./components/Public"
 import PersistLogin from "./features/auth/PersistLogin"
 import Prefetch from "./features/auth/Prefetch"
+import ArchivedNoteList from "./features/notes/ArchivedNoteList"
 
 const App = () => {
   return (
@@ -15,8 +16,12 @@ const App = () => {
         <Route element={<PersistLogin />}>
           <Route element={<Prefetch />}>
 
-            <Route path="public" element={<Public />} />
-            
+            <Route path="public">
+              <Route index element={<Public />} />
+              
+              <Route path="archive" element={<ArchivedNoteList />} />
+            </Route>
+        
           </Route>
         </Route>
       </Route>

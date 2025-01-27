@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGetUserNotesQuery } from './notesApiSlice'
-import { Box, IconButton, Stack, styled, Typography } from '@mui/material'
+import { Box, IconButton, Stack, styled } from '@mui/material'
 import NoteCard from './NoteCard'
 
 export const Container = styled(Box)(({ theme }) => ({
