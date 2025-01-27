@@ -38,22 +38,22 @@ export const paletteTheme = [
         dark: "#41752B"
     },
     {
-        bgColor: "#EBE31E",
-        color: "#000000",
-        light: "#000000",
-        dark: "#676768"
+        bgColor: "#A07414",
+        color: "#060606",
+        light: "#161616",
+        dark: "#676464"
     },
     {
-        bgColor: "#C361F8",
-        color: "#0003FF",
-        light: "#0003FF",
-        dark: "#954ABD"
+        bgColor: "#76299F",
+        color: "#FFFFFF",
+        light: "#FFFFFF",
+        dark: "#9F9C9C"
     },
     {
         bgColor: "#969339",
         color: "#E3E0FF",
         light: "#FFFFFF",
-        dark: "#BDBDBD"
+        dark: "#434141"
     }
 ]
 

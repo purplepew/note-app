@@ -103,10 +103,10 @@ const NoteCard = ({ note, setFeedback }) => {
                     onClose={handleClosePalette}
                     component={Box}
                 >
-                    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
                         <CustomIconButton Icon={<SquareIcon />} color='#3f3f3e' func={() => handleChangeTheme(0)} />
-                        <CustomIconButton Icon={<SquareIcon />} color='#EBE31E' func={() => handleChangeTheme(1)} />
-                        <CustomIconButton Icon={<SquareIcon />} color='#C361F8' func={() => handleChangeTheme(2)} />
+                        <CustomIconButton Icon={<SquareIcon />} color='#A07414' func={() => handleChangeTheme(1)} />
+                        <CustomIconButton Icon={<SquareIcon />} color='#76299F' func={() => handleChangeTheme(2)} />
                         <CustomIconButton Icon={<SquareIcon />} color='#969339' func={() => handleChangeTheme(3)} />
                     </Box>
                 </Popover>
