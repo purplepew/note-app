@@ -1,10 +1,10 @@
-import { Box, IconButton, InputBase, Modal, styled } from '@mui/material'
+import { Box, Button, IconButton, InputBase, Modal, Stack, styled } from '@mui/material'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePatchNoteMutation } from './notesApiSlice'
 import { paletteTheme } from './NoteList'
 
-const Container = styled(Box)(({ theme }) => ({
-    height: 500,
+const EditNoteContainer = styled(Box)(({ theme }) => ({
+    paddingTop: '10px',
     width: 700,
     backgroundColor: theme.palette.background.paper,
     position: 'absolute',
@@ -12,7 +12,18 @@ const Container = styled(Box)(({ theme }) => ({
     top: '50%',
     transform: 'translate(-50%, -50%)',
     borderRadius: theme.shape.borderRadius,
-    overflowY: 'auto'
+    [theme.breakpoints.down('md')]: {
+        height: 400,
+        width: 550,
+    },
+    [theme.breakpoints.down('sm')]: {
+        top: '20%',
+        left: '10%',
+        transform: 'none',
+        height: 350,
+        width: 370,
+    },
+
 }))
 
 const InputWrapper = styled(Box)(({ theme }) => ({
@@ -68,31 +79,36 @@ const EditNote = ({ note, handleCloseEditMode, initialFocus, setFeedback }) => {
 
     return (
         <Modal open={open} onClose={handleClose}>
-            <Container sx={{ backgroundColor: colorTheme.bgColor }}>
-                <InputWrapper>
-                    <CustomInput
-                        value={title}
-                        onChange={handleChange(setTitle)}
-                        placeholder='Title'
-                        inputRef={titleRef}
-                        fullWidth
-                        spellCheck={false}
-                        sx={{ color: colorTheme.color }}
-                    />
-                </InputWrapper>
-                <InputWrapper>
-                    <CustomInput
-                        value={body}
-                        onChange={handleChange(setBody)}
-                        placeholder='Body'
-                        inputRef={bodyRef}
-                        fullWidth
-                        multiline
-                        spellCheck={false}
-                        sx={{ color: colorTheme.color }}
-                    />
-                </InputWrapper>
-            </Container>
+            <EditNoteContainer sx={{ backgroundColor: colorTheme.bgColor }}>
+                <Stack>
+                    <InputWrapper>
+                        <CustomInput
+                            value={title}
+                            onChange={handleChange(setTitle)}
+                            placeholder='Title'
+                            inputRef={titleRef}
+                            fullWidth
+                            spellCheck={false}
+                            sx={{ color: colorTheme.color }}
+                        />
+                    </InputWrapper>
+                    <InputWrapper sx={{height: {xs: 300, md: 400}, overflowY: 'auto', backgroundColor: colorTheme.bgColor}}>
+                        <CustomInput
+                            value={body}
+                            onChange={handleChange(setBody)}
+                            placeholder='Body'
+                            inputRef={bodyRef}
+                            fullWidth
+                            multiline
+                            spellCheck={false}
+                            sx={{ color: colorTheme.color }}
+                        />
+                    </InputWrapper>
+                    <Stack sx={{padding: '20px', backgroundColor: colorTheme.bgColor, boxShadow: `0 -5px 10px 2px ${colorTheme.bgColor}`, zIndex: 4}}>
+                        <Button onClick={handleClose} size='small' sx={{ml: 'auto', color: colorTheme.color}}>Close</Button>
+                    </Stack>
+                </Stack>
+            </EditNoteContainer>
         </Modal>
     )
 }

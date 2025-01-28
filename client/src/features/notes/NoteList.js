@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGetUserNotesQuery } from './notesApiSlice'
-import { Box, IconButton, Stack, styled } from '@mui/material'
+import { Box, IconButton, Stack, styled, Typography } from '@mui/material'
 import NoteCard from './NoteCard'
 import { useSelector } from 'react-redux'
 import { selectCurrentNoteListState } from './NoteListSlice'
@@ -15,6 +15,9 @@ export const Container = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     marginTop: '10px',
     breakInside: 'avoid',
+    [theme.breakpoints.down('sm')]:{
+        width: 350
+    }
 }))
 
 export const InputWrapper = styled(Stack)(({ theme }) => ({
@@ -102,7 +105,7 @@ const NoteList = ({ setFeedback, userId }) => {
                 {
                     showArchivedNotes && (
                         <>
-                            <p>Archives</p>
+                            <Typography>Archives</Typography>
                             <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, }}>
                                 {renderArchivedNotes}
                             </Box>
