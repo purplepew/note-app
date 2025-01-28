@@ -43,7 +43,7 @@ export const paletteTheme = [
         bgColor: "#A07414",
         color: "#060606",
         light: "#161616",
-        dark: "#676464"
+        dark: "#404040"
     },
     {
         bgColor: "#76299F",
@@ -102,6 +102,7 @@ const NoteList = ({ setFeedback, userId }) => {
                 {
                     showArchivedNotes && (
                         <>
+                            <p>Archives</p>
                             <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, }}>
                                 {renderArchivedNotes}
                             </Box>

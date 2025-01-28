@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllUsers, getUserArchivedNotes, getUserNotes, postNewUser } from '../controller/userController.js'
+import { getAllUsers, getUserNotes, postNewUser } from '../controller/userController.js'
 
 const router = express.Router()
 
