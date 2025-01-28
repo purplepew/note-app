@@ -30,12 +30,12 @@ const CustomInput = styled(InputBase)(({ theme }) => ({
 
 const EditNote = ({ note, handleCloseEditMode, initialFocus, setFeedback }) => {
     const [open, setOpen] = useState(true)
-    const colorTheme = paletteTheme[note.colorTheme || 0]
+    const colorTheme = paletteTheme[note?.colorTheme || 0]
 
     const titleRef = useRef()
     const bodyRef = useRef()
-    const [title, setTitle] = useState(note.title ?? '')
-    const [body, setBody] = useState(note.body ?? '')
+    const [title, setTitle] = useState(note?.title ?? '')
+    const [body, setBody] = useState(note?.body ?? '')
 
     const [patchNote] = usePatchNoteMutation()
 
