@@ -10,7 +10,4 @@ router.route('')
 router.route('/:userId')
 .get(getUserNotes)
 
-router.route('/:userId/archived')
-.get(getUserArchivedNotes)
-
 export default router
