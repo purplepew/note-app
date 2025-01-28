@@ -2,6 +2,8 @@ import React from 'react'
 import { useGetUserNotesQuery } from './notesApiSlice'
 import { Box, IconButton, Stack, styled } from '@mui/material'
 import NoteCard from './NoteCard'
+import { useSelector } from 'react-redux'
+import { selectCurrentNoteListState } from './NoteListSlice'
 
 export const Container = styled(Box)(({ theme }) => ({
     minHeight: 150,
@@ -22,9 +24,9 @@ export const InputWrapper = styled(Stack)(({ theme }) => ({
     overflowY: 'hidden'
 }))
 
-export const CustomIconButton = ({ Icon, ml, func, color='red'}) => {
+export const CustomIconButton = ({ Icon, ml, func, color = 'red' }) => {
     return (
-        <IconButton size='small' sx={{ ml, color}} onClick={func}>
+        <IconButton size='small' sx={{ ml, color }} onClick={func}>
             {Icon}
         </IconButton>
     )
@@ -59,6 +61,8 @@ export const paletteTheme = [
 
 const NoteList = ({ setFeedback, userId }) => {
 
+    const showArchivedNotes = useSelector(selectCurrentNoteListState)
+   
     const { notes, isLoadingNoteList, isSuccessNoteList } = useGetUserNotesQuery(userId, {
         selectFromResult: ({ data, isLoading, isSuccess }) => ({
             notes: data,
@@ -74,19 +78,36 @@ const NoteList = ({ setFeedback, userId }) => {
         const { ids, entities } = notes
 
         const pinnedNotesIds = ids.filter(id => entities[id].pinned === true)
+        const archivedNotesIds = ids.filter(id => entities[id].archived === true)
         const regularNotesIds = ids.filter(id => !pinnedNotesIds.includes(id) && entities[id].archived === false)
 
         const renderPinnedNotes = pinnedNotesIds.map(noteId => <NoteCard note={entities[noteId]} key={noteId} userId={userId} setFeedback={setFeedback} />)
+        const renderArchivedNotes = archivedNotesIds.map(noteId => <NoteCard note={entities[noteId]} key={noteId} userId={userId} setFeedback={setFeedback} />)
         const renderRegularNotes = regularNotesIds.map(noteId => <NoteCard note={entities[noteId]} key={noteId} userId={userId} setFeedback={setFeedback} />)
 
         return (
             <Box>
-                <Box sx={{ columnCount: {xs: 1, sm: 2, md: 3, lg: 4}, mb: 1}}>
-                    {renderPinnedNotes}
-                </Box>
-                <Box sx={{ columnCount: {xs: 1, sm: 2, md: 3, lg: 4}, }}>
-                    {renderRegularNotes}
-                </Box>
+                {
+                    !showArchivedNotes && (
+                        <>
+                            <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, mb: 1 }}>
+                                {renderPinnedNotes}
+                            </Box>
+                            <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, }}>
+                                {renderRegularNotes}
+                            </Box>
+                        </>
+                    )
+                }
+                {
+                    showArchivedNotes && (
+                        <>
+                            <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, }}>
+                                {renderArchivedNotes}
+                            </Box>
+                        </>
+                    )
+                }
             </Box>
         )
 
