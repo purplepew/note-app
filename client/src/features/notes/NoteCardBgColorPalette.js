@@ -29,7 +29,7 @@ const NoteCardBgColorPalette = ({ setFeedback, note, colorTheme }) => {
             setTrueSuccess(true)
 
         } catch (error) {
-            const message = 'Could not change note theme: ' + (error.data.message || 'Unknown error')
+            const message = 'Failed: ' + (error.data.message || 'Unknown error')
             setFeedback(message)
         }
     }, [patchNote, note.id, setFeedback, handleClosePalette])
@@ -49,7 +49,12 @@ const NoteCardBgColorPalette = ({ setFeedback, note, colorTheme }) => {
                     <CustomIconButton Icon={<SquareIcon />} color='#969339' func={() => handleChangeTheme(3)} />
                 </Box>
             </Popover>
-            <CustomIconButton Icon={<PaletteIcon fontSize='small' />} func={handleOpenPalette} color={colorTheme.dark} />
+            <CustomIconButton
+                Icon={<PaletteIcon fontSize='small' />}
+                func={handleOpenPalette}
+                color={colorTheme.dark}
+                title="Card Background Color"
+            />
         </>
     )
 }

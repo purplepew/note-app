@@ -53,7 +53,7 @@ const NewNote = ({ userId, setFeedback }) => {
             setBody('')
             handleClose()
         } catch (error) {
-            const message = 'Failed to post note: ' + (error.data.message || 'Error')
+            const message = 'Not created: ' + (error.data.message || 'Error')
             setFeedback(message)
             handleClose()
         }

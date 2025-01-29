@@ -13,13 +13,18 @@ const NoteCardArchiveBtn = ({ setFeedback, note, colorTheme }) => {
         try {
             await patchNote({ noteId: note.id, archived: !note.archived }).unwrap()
         } catch (error) {
-            const message = 'Could not archive note: ' + (error.data.message || 'Unknown error')
+            const message = 'Failed: ' + (error.data.message || 'Unknown error')
             setFeedback(message)
         }
     }, [patchNote, note.id, note.archived, setFeedback])
 
     return (
-        <CustomIconButton Icon={<ArchiveIcon fontSize='small' />} func={handleArchiveNote} color={colorTheme.dark} />
+        <CustomIconButton
+            Icon={<ArchiveIcon fontSize='small' />}
+            func={handleArchiveNote}
+            color={colorTheme.dark}
+            title="Archive"
+        />
 
     )
 }

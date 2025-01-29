@@ -1,6 +1,7 @@
 import User from '../models/users/User.js'
 import AsyncHandler from 'express-async-handler'
 import bcrypt from 'bcrypt'
+import Note from '../models/notes/Note.js'
 
 export const getAllUsers = AsyncHandler(async (req, res) => {
 
@@ -36,13 +37,28 @@ export const postNewUser = AsyncHandler(async (req, res) => {
 
 export const getUserNotes = AsyncHandler(async (req, res) => {
     const { userId } = req.params
-
+    
     const foundUser = await User.findById(userId).exec()
-
+    
     const { notes } = await foundUser.populate({
         path: 'notes',
         options: { sort: { lastEditedAt: -1 } }
     });
-
+    
     res.json(notes)
+})
+
+export const searchQuery = AsyncHandler(async (req, res) => {
+    const { query } = req.body 
+    const {userId} = req.params
+    if(!query) return res.status(400).json({message: 'No query'})
+    
+    const foundUser = await User.findById(userId).exec()
+
+    const { notes } = await foundUser.populate('notes');
+
+    const foundNotes = notes.filter(note => note.title.indexOf(query) !== -1 || note.body.indexOf(query) !== -1)
+
+    res.json(foundNotes)
+
 })

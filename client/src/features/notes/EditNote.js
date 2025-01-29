@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, InputBase, Modal, Stack, styled } from '@mui/material'
+import { Box, Button, InputBase, Modal, Stack, styled } from '@mui/material'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePatchNoteMutation } from './notesApiSlice'
 import { paletteTheme } from './NoteList'
@@ -64,13 +64,16 @@ const EditNote = ({ note, handleCloseEditMode, initialFocus, setFeedback }) => {
 
     const handleChange = useCallback((setter) => (e) => setter(e.target.value), [])
 
+    const handleFocusTitle = () => titleRef.current.focus()
+    const handleFocusBody = () => bodyRef.current.focus()
+
     const handleClose = useCallback(async () => {
         try {
             await patchNote({ title, body, noteId: note.id }).unwrap()
             setOpen(false)
             handleCloseEditMode()
         } catch (error) {
-            const message = 'Note NOT updated: ' + (error.data.message || 'Unknown error')
+            const message = 'Not updated: ' + (error.data.message || 'Unknown error')
             setFeedback(message)
             setOpen(false)
             handleCloseEditMode()
@@ -81,7 +84,7 @@ const EditNote = ({ note, handleCloseEditMode, initialFocus, setFeedback }) => {
         <Modal open={open} onClose={handleClose}>
             <EditNoteContainer sx={{ backgroundColor: colorTheme.bgColor }}>
                 <Stack>
-                    <InputWrapper>
+                    <InputWrapper onClick={handleFocusTitle}>
                         <CustomInput
                             value={title}
                             onChange={handleChange(setTitle)}
@@ -92,7 +95,7 @@ const EditNote = ({ note, handleCloseEditMode, initialFocus, setFeedback }) => {
                             sx={{ color: colorTheme.color }}
                         />
                     </InputWrapper>
-                    <InputWrapper sx={{height: {xs: 300, md: 400}, overflowY: 'auto', backgroundColor: colorTheme.bgColor}}>
+                    <InputWrapper sx={{ height: { xs: 300, md: 400 }, overflowY: 'auto', backgroundColor: colorTheme.bgColor }} onClick={handleFocusBody}>
                         <CustomInput
                             value={body}
                             onChange={handleChange(setBody)}
@@ -104,8 +107,8 @@ const EditNote = ({ note, handleCloseEditMode, initialFocus, setFeedback }) => {
                             sx={{ color: colorTheme.color }}
                         />
                     </InputWrapper>
-                    <Stack sx={{padding: '20px', backgroundColor: colorTheme.bgColor, boxShadow: `0 -5px 10px 2px ${colorTheme.bgColor}`, zIndex: 4}}>
-                        <Button onClick={handleClose} size='small' sx={{ml: 'auto', color: colorTheme.color}}>Close</Button>
+                    <Stack sx={{backgroundColor: colorTheme.bgColor, zIndex: 1 }}>
+                        <Button onClick={handleClose} size='small' sx={{ ml: 'auto', color: colorTheme.color}}>Close</Button>
                     </Stack>
                 </Stack>
             </EditNoteContainer>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGetUserNotesQuery } from './notesApiSlice'
-import { Box, IconButton, Stack, styled, Typography } from '@mui/material'
+import { Box, Divider, IconButton, Stack, styled, Typography } from '@mui/material'
 import NoteCard from './NoteCard'
 import { useSelector } from 'react-redux'
 import { selectCurrentNoteListState } from './NoteListSlice'
@@ -15,7 +15,7 @@ export const Container = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     marginTop: '10px',
     breakInside: 'avoid',
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
         width: 350
     }
 }))
@@ -27,9 +27,9 @@ export const InputWrapper = styled(Stack)(({ theme }) => ({
     overflowY: 'hidden'
 }))
 
-export const CustomIconButton = ({ Icon, ml, func, color = 'red' }) => {
+export const CustomIconButton = ({ Icon, ml, func, color = 'red', title}) => {
     return (
-        <IconButton size='small' sx={{ ml, color }} onClick={func}>
+        <IconButton size='small' sx={{ ml, color }} onClick={func} title={title}>
             {Icon}
         </IconButton>
     )
@@ -65,7 +65,7 @@ export const paletteTheme = [
 const NoteList = ({ setFeedback, userId }) => {
 
     const showArchivedNotes = useSelector(selectCurrentNoteListState)
-   
+
     const { notes, isLoadingNoteList, isSuccessNoteList } = useGetUserNotesQuery(userId, {
         selectFromResult: ({ data, isLoading, isSuccess }) => ({
             notes: data,
@@ -88,34 +88,38 @@ const NoteList = ({ setFeedback, userId }) => {
         const renderArchivedNotes = archivedNotesIds.map(noteId => <NoteCard note={entities[noteId]} key={noteId} userId={userId} setFeedback={setFeedback} />)
         const renderRegularNotes = regularNotesIds.map(noteId => <NoteCard note={entities[noteId]} key={noteId} userId={userId} setFeedback={setFeedback} />)
 
-        return (
-            <Box>
-                {
-                    !showArchivedNotes && (
-                        <>
-                            <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, mb: 1 }}>
-                                {renderPinnedNotes}
-                            </Box>
-                            <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, }}>
-                                {renderRegularNotes}
-                            </Box>
-                        </>
-                    )
-                }
-                {
-                    showArchivedNotes && (
-                        <>
-                            <Typography>Archives</Typography>
-                            <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, }}>
-                                {renderArchivedNotes}
-                            </Box>
-                        </>
-                    )
-                }
-            </Box>
-        )
+        let content
+
+        if (!showArchivedNotes) {
+            content = (
+                <>
+                    <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, mb: 1 }}>
+                        {renderPinnedNotes}
+                    </Box>
+
+                    {pinnedNotesIds.length > 0 && <Divider />}
+
+                    <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, }}>
+                        {renderRegularNotes}
+                    </Box>
+                </>
+            )
+        }
+        else {
+            content = (
+                <>
+                    <Typography>Archives</Typography>
+                    <Box sx={{ columnCount: { xs: 1, sm: 2, md: 3, lg: 4 }, }}>
+                        {renderArchivedNotes}
+                    </Box>
+                </>
+            )
+        }
+
+        return content
 
     } else {
+        
         return <p>Error</p>
     }
 

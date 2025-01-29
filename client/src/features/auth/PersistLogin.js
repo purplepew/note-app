@@ -3,16 +3,17 @@ import { useSelector } from "react-redux"
 import { selectCurrentToken } from "./authSlice"
 import { useRefreshMutation } from "./authApiSlice"
 import { Outlet, Link } from "react-router-dom"
+import { Typography } from "@mui/material"
 
 
 const PersistLogin = () => {
     const token = useSelector(selectCurrentToken)
-    
+
     const effectRan = useRef(false)
     const [trueSuccess, setTrueSuccess] = useState(false)
-    
-    const [refresh, 
-        {isSuccess, isUninitialized, isLoading}] = useRefreshMutation()
+
+    const [refresh,
+        { isSuccess, isUninitialized, isLoading }] = useRefreshMutation()
 
 
     useEffect(() => {
@@ -25,20 +26,24 @@ const PersistLogin = () => {
                     console.log(error)
                 }
             }
-            if(!token) verifyRefreshToken()
+            if (!token) verifyRefreshToken()
         }
         return () => effectRan.current = true
     }, [refresh, token])
 
     let content
 
-    if(isUninitialized && token) content = <Outlet />
-    
-    else if(isLoading) content = <p>Loading...</p>
+    if (isUninitialized && token) content = <Outlet />
 
-    else if(isSuccess && trueSuccess) content = <Outlet />
+    else if (isLoading) content = <p>Loading...</p>
 
-    else content = <Link to='/'>Please login</Link>
+    else if (isSuccess && trueSuccess) content = <Outlet />
+
+    else content = (
+        <Link to='/'>
+            <Typography>Please login</Typography>
+        </Link>
+    )
 
     return content
 }

@@ -10,14 +10,9 @@ import { selectCurrentToken } from "../features/auth/authSlice"
 import ArchiveIcon from '@mui/icons-material/Archive'
 import EventNoteIcon from '@mui/icons-material/EventNote'
 import { IconButton } from "@mui/material"
-import { noteApiSlice } from "../features/notes/notesApiSlice"
-import useAuth from '../hooks/useAuth'
-import { store } from '../app/store'
-import { useState } from "react"
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { hideArchivedNotes, revealArchivedNotes, selectCurrentNoteListState } from "../features/notes/NoteListSlice"
-
-
+import HeaderSearchBtn from "./HeaderSearchBtn"
 
 
 const Header = () => {
@@ -38,12 +33,14 @@ const Header = () => {
         }
     }
 
+    const btnIcon = showArchivedNotes ? <EventNoteIcon /> : <ArchiveIcon />
+    const btnTitle = showArchivedNotes ? 'Go To Notes' : 'Go to Archives'
+
     const NavButtons = () => token && (
-        <Stack ml='auto' direction="row">
-            <IconButton color='primary' onClick={toggleNoteListState} title={showArchivedNotes?'Go back to Notes':'Go to Archives'}>
-                {
-                    !showArchivedNotes ? <ArchiveIcon /> : <EventNoteIcon />
-                }
+        <Stack ml='auto' direction="row" alignItems='center'>
+            <HeaderSearchBtn />
+            <IconButton onClick={toggleNoteListState} title={btnTitle} color='primary'>
+                {btnIcon}
             </IconButton>
             <Button variant='contained' onClick={handleLogout} disabled={isLoading}>Logout</Button>
         </Stack>
@@ -52,13 +49,8 @@ const Header = () => {
     return (
         <AppBar position="static" component={Paper} sx={{ backgroundColor: 'background.paper', minWidth: 300 }}>
             <Toolbar >
-
-                <Stack>
-                    <Link to='/public'><Typography color='primary'>NotesDB</Typography></Link>
-                </Stack>
-
+                <Link to='/public'><Typography color='primary'>NotesDB</Typography></Link>
                 <NavButtons />
-
             </Toolbar>
         </AppBar>
     )

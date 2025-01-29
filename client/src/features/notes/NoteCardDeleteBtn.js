@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useDeleteNoteMutation } from './notesApiSlice'
 import { CustomIconButton } from './NoteList'
 
-const NoteCardDeleteBtn = ({setFeedback, note, colorTheme}) => {
+const NoteCardDeleteBtn = ({ setFeedback, note, colorTheme }) => {
 
     const [deleteNote] = useDeleteNoteMutation()
 
@@ -11,12 +11,18 @@ const NoteCardDeleteBtn = ({setFeedback, note, colorTheme}) => {
         try {
             await deleteNote({ noteId: note.id }).unwrap()
         } catch (error) {
-            const message = 'Could not delete note: ' + (error.data.message || 'Unknown error')
+            const message = 'Failed: ' + (error.data.message || 'Unknown error')
             setFeedback(message)
         }
     }, [deleteNote, note.id, setFeedback])
     return (
-        <CustomIconButton Icon={<DeleteIcon fontSize='small' />} func={handleDeleteNote} ml='auto' color={colorTheme.dark} />
+        <CustomIconButton
+            Icon={<DeleteIcon fontSize='small' />}
+            func={handleDeleteNote}
+            ml='auto'
+            color={colorTheme.dark}
+            title="Delete"
+        />
 
     )
 }

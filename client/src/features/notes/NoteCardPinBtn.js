@@ -12,13 +12,19 @@ const NoteCardPinBtn = ({ setFeedback, note, colorTheme }) => {
         try {
             await patchNote({ noteId: note.id, pinned: !note.pinned }).unwrap()
         } catch (error) {
-            const message = 'Could not pin note: ' + (error.data.message || 'Unknown error')
+            const message = 'Failed: ' + (error.data.message || 'Unknown error')
             setFeedback(message)
         }
     }, [patchNote, note.id, note.pinned, setFeedback])
 
     return (
-        <CustomIconButton Icon={<PushPinIcon />} ml='auto' func={handlePinNote} color={note.pinned ? 'orange' : colorTheme.dark} />
+        <CustomIconButton
+            Icon={<PushPinIcon />}
+            ml='auto'
+            func={handlePinNote}
+            color={note.pinned ? 'orange' : colorTheme.dark}
+            title="Pin"
+        />
 
     )
 }
