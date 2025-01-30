@@ -46,7 +46,8 @@ export const patchNote = AsyncHandler(async (req, res) => {
         body,
         pinned,
         archived,
-        colorTheme
+        colorTheme,
+        forceUpdate
     } = req.body
 
 
@@ -68,7 +69,7 @@ export const patchNote = AsyncHandler(async (req, res) => {
         isModified = true
     }
 
-    if (!isModified && archived === undefined && pinned === undefined && colorTheme === undefined) {
+    if (!isModified && archived === undefined && pinned === undefined && colorTheme === undefined && !forceUpdate) {
         return res.status(400).json({ message: 'No changes were made' })
     }
 
@@ -86,7 +87,7 @@ export const patchNote = AsyncHandler(async (req, res) => {
         }
     }
 
-    if (isModified) {
+    if (isModified || forceUpdate) {
         note.lastEditedAt = new Date().toISOString()
     }
 

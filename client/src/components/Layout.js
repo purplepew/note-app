@@ -4,7 +4,7 @@ import Header from './Header'
 
 const Layout = () => {
     return (
-        <Container sx={{minHeight: '100vh', backgroundColor: 'secondary.main'}}>
+        <Container sx={{ minHeight: '100vh', backgroundColor: 'secondary.main' }}>
             <Header />
             <Outlet />
         </Container>

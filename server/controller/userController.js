@@ -51,14 +51,17 @@ export const getUserNotes = AsyncHandler(async (req, res) => {
 export const searchQuery = AsyncHandler(async (req, res) => {
     const { query } = req.body 
     const {userId} = req.params
+
     if(!query) return res.status(400).json({message: 'No query'})
-    
+
+
     const foundUser = await User.findById(userId).exec()
 
     const { notes } = await foundUser.populate('notes');
 
-    const foundNotes = notes.filter(note => note.title.indexOf(query) !== -1 || note.body.indexOf(query) !== -1)
+    const regex = new RegExp(query, 'i')
+
+    const foundNotes = notes.filter(note => note.title.search(regex) !== -1 || note.body.search(regex) !== -1)
 
     res.json(foundNotes)
-
 })

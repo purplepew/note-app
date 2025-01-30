@@ -56,16 +56,25 @@ export const noteApiSlice = apiSlice.injectEndpoints({
             },
         }),
         patchNote: builder.mutation({
-            query: (props) => {
-                return ({
-                    url: '/notes',
-                    method: 'PATCH',
-                    body: { ...props }
-                })
-            },
+            query: (props) => ({
+                url: '/notes',
+                method: 'PATCH',
+                body: { ...props }
+            }),
             invalidatesTags: (result, err, arg) => [{ type: 'Note', id: arg.noteId }]
         }),
+        noteSearchQuery: builder.mutation({
+            query: ({ userId, query }) => ({
+                url: `/users/${userId}`,
+                method: 'POST',
+                body: { query }
+            })
+        })
     })
 })
 
-export const { useGetUserNotesQuery, usePostNewNoteMutation, useDeleteNoteMutation, usePatchNoteMutation, useGetUserArchivedNotesQuery } = noteApiSlice
+export const { useGetUserNotesQuery,
+    usePostNewNoteMutation,
+    useDeleteNoteMutation,
+    usePatchNoteMutation,
+    useNoteSearchQueryMutation } = noteApiSlice
