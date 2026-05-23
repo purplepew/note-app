@@ -36,6 +36,14 @@ npm start
 
 The client runs on `http://localhost:3000` and talks to the server at `http://localhost:3500`.
 
+Create a `client/.env.local` file if you want to change the API URL without touching source code:
+
+```env
+REACT_APP_API_URL=http://localhost:3500
+```
+
+For deployment, set `REACT_APP_API_URL` to your hosted server URL.
+
 ## Notes
 
 - Start the server before using the app.
