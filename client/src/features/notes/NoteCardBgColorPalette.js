@@ -9,7 +9,6 @@ import { usePatchNoteMutation } from './notesApiSlice';
 const NoteCardBgColorPalette = ({ setFeedback, note, colorTheme }) => {
     const [paletteAnchorEl, setPaletteAnchorEl] = useState(null)
     const isOpenPalette = Boolean(paletteAnchorEl)
-    const [trueSuccess, setTrueSuccess] = useState(false)
 
     const [patchNote] = usePatchNoteMutation()
 
@@ -26,7 +25,6 @@ const NoteCardBgColorPalette = ({ setFeedback, note, colorTheme }) => {
         try {
             await patchNote({ noteId: note.id, colorTheme: themeNumber }).unwrap()
             handleClosePalette()
-            setTrueSuccess(true)
 
         } catch (error) {
             const message = 'Failed: ' + (error.data.message || 'Unknown error')

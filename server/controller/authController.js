@@ -3,6 +3,32 @@ import AsyncHandler from 'express-async-handler'
 import User from '../models/users/User.js'
 import bcrypt from 'bcrypt'
 
+const issueAuthTokens = (res, foundUser) => {
+    const accessToken = jwt.sign(
+        {
+            UserInfo: {
+                username: foundUser.username,
+                role: foundUser.role,
+                id: foundUser._id
+            }
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '10m' }
+    )
+
+    const refreshToken = jwt.sign(
+        {
+            username: foundUser.username
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '20m' }
+    )
+
+    res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 1000 * 60 * 60 * 24 * 10 })
+
+    return res.json({ accessToken })
+}
+
 export const login = AsyncHandler(async (req, res) => {
     const { username, password } = req.body
     if (!username || !password) return res.sendStatus(400)
@@ -13,29 +39,24 @@ export const login = AsyncHandler(async (req, res) => {
     const match = await bcrypt.compare(password, foundUser.password)
     if (!match) return res.status(400).json({ message: 'Incorrect password' })
 
-    const accessToken = jwt.sign(
-        {
-            "UserInfo": {
-                "username": foundUser.username,
-                "role": foundUser.role,
-                "id": foundUser._id
-            }
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '10m' }
-    )
+    issueAuthTokens(res, foundUser)
+})
 
-    const refreshToken = jwt.sign(
-        {
-            "username": foundUser.username
-        },
-        process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: '20m' }
-    )
+export const signup = AsyncHandler(async (req, res) => {
+    const { username, password } = req.body
+    if (!username || !password) return res.sendStatus(400)
 
-    res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 1000 * 60 * 60 * 24 * 10 })
+    const duplicate = await User.findOne({ username }).collation({ locale: 'en', strength: 2 }).lean().exec()
+    if (duplicate) return res.status(409).json({ message: 'Username already exists' })
 
-    res.json({ accessToken })
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const newUser = await User.create({
+        username,
+        password: hashedPassword
+    })
+
+    issueAuthTokens(res, newUser)
 })
 
 export const refresh = AsyncHandler(async (req, res) => {
